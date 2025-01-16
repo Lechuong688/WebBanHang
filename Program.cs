@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using WebBanHang.Repository;
+using WebBanHang.Repository.Product;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,7 @@ builder.Services.AddDbContext<DataContext>(options =>
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
 var app = builder.Build();
 

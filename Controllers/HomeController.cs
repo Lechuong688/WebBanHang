@@ -10,9 +10,9 @@ namespace WebBanHang.Controllers
     {
         private readonly DataContext _dataContext;
         private readonly ILogger<HomeController> _logger;
-        private readonly ProductRepository _productRepository;
+        private readonly IProductRepository _productRepository;
 
-        public HomeController(ILogger<HomeController> logger, DataContext context, ProductRepository productRepository)
+        public HomeController(ILogger<HomeController> logger, DataContext context, IProductRepository productRepository)
         {
             _logger = logger;
             _dataContext = context;
