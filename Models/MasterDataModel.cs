@@ -2,13 +2,15 @@
 
 namespace WebBanHang.Models
 {
-    public class ProductsModel
+    public class MasterDataModel
     {
         [Key]
         public int Id { get; set; }
-        [Required(ErrorMessage = "TypeId không được để trống")]
-        public int TypeId { get; set; }
-        [Required(ErrorMessage = "Name không được để trống")]
+        [Required, MinLength(2, ErrorMessage = "Yêu cầu nhập GroupId")]
+        public int GroupId { get; set; }
+        [Required, MinLength(2, ErrorMessage = "Yêu cầu nhập Code")]
+        public string Code { get; set; }
+        [Required, MinLength(2, ErrorMessage ="Yêu cầu nhập tên danh mục")]
         public string Name { get; set; }
         public string Note { get; set; }
         public bool IsDeleted { get; set; }
@@ -16,7 +18,5 @@ namespace WebBanHang.Models
         public DateTime? CreatedDate { get; set; }
         public int? UpdatedBy { get; set; }
         public DateTime? UpdatedDate { get; set; }
-
-
     }
 }

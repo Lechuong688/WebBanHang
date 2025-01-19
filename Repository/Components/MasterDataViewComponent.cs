@@ -3,14 +3,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WebBanHang.Repository.Components
 {
-    public class CategoriesViewComponent : ViewComponent
+    public class MasterDataViewComponent : ViewComponent
     {
         private readonly DataContext _dataContext;
-        public CategoriesViewComponent(DataContext context)
+        public MasterDataViewComponent(DataContext context)
         {
             _dataContext = context;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync() => View(await _dataContext.Categories.ToArrayAsync());
+        public async Task<IViewComponentResult> InvokeAsync() => View(await _dataContext.MasterData.ToArrayAsync());
     }
 }

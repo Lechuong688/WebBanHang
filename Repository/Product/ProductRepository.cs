@@ -14,7 +14,7 @@ namespace WebBanHang.Repository.Product
         }
         public List<ProductsModel> GetList(int pageIndex, int pageSize, string keySearch)
         {
-            return _dataContext.Products.ToList();
+            return _dataContext.Product.ToList();
         }
     }
 }

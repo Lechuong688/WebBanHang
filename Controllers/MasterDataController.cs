@@ -2,7 +2,7 @@
 
 namespace WebBanHang.Controllers
 {
-    public class CategoryController : Controller
+    public class MasterDataController : Controller
     {
         public IActionResult Index()
         {
