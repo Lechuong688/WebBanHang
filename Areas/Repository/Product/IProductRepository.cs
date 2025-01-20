@@ -1,7 +1,7 @@
 ﻿using WebBanHang.Controllers;
 using WebBanHang.Models;
 
-namespace WebBanHang.Repository.Product
+namespace WebBanHang.Areas.Admin.Product
 {
     public interface IProductRepository
     {

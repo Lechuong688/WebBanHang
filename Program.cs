@@ -14,6 +14,9 @@ builder.Services.AddDbContext<DataContext>(options =>
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<WebBanHang.Areas.Admin.Product.IProductRepository, WebBanHang.Areas.Admin.Product.ProductRepository>();
+
+
 
 var app = builder.Build();
 
@@ -35,5 +38,9 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
+    name: "Areas",
+    pattern: "{area:exists}/{controller=Product}/{action=Index}/{id?}");
 
 app.Run();

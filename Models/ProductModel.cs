@@ -2,7 +2,7 @@
 
 namespace WebBanHang.Models
 {
-    public class ProductsModel
+    public class ProductModel
     {
         [Key]
         public int Id { get; set; }

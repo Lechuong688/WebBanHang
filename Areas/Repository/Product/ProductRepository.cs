@@ -1,13 +1,16 @@
-﻿using WebBanHang.Controllers;
+﻿using Microsoft.AspNetCore.Mvc;
+using WebBanHang.Controllers;
 using WebBanHang.Models;
+using WebBanHang.Repository;
+using WebBanHang.Areas.Admin.Product;
 
-namespace WebBanHang.Repository.Product
+namespace WebBanHang.Areas.Admin.Product
 {
     public class ProductRepository: IProductRepository
     {
         private readonly DataContext _dataContext;
-        private readonly ILogger<HomeController> _logger;
-        public ProductRepository(ILogger<HomeController> logger, DataContext context)
+        private readonly ILogger<ProductRepository> _logger;
+        public ProductRepository(ILogger<ProductRepository> logger, DataContext context)
         {
             _logger = logger;
             _dataContext = context;
