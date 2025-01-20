@@ -1,4 +1,4 @@
-﻿@model List<WebBanHang.Models.ProductModel>
+﻿@model List<WebBanHang.Areas.Admin.Models.ProductViewModel>
 @{
     ViewData["title"] = "Product List";
 }
@@ -7,33 +7,25 @@
     <thead>
         <tr>
             <th scope="col">STT</th>
-            <th scope="col">TypeId</th>
+            <th scope="col">Loại sản phẩm</th>
             <th scope="col">Tên sản phẩm</th>
+            <th scope="col">Giá sản phẩm</th>
             <th scope="col">Ghi chú</th>
-            <th scope="col">CreatedBy</th>
-            <th scope="col">CreatedDate</th>
-            <th scope="col">UpdatedBy</th>
-            <th scope="col">UpdatedDate</th>
-            <th scope="col">IsDeleted</th>
         </tr>
     </thead>
     <tbody>
         @if (Model != null && Model.Any())
         {
-        @foreach (var item in Model)
-        {
-            <tr>
-                <th>@item.Id</th>
-                <td>@item.TypeId</td>
-                <td>@item.Name</td>
-                <td>@item.Note</td>
-                <td>@item.CreatedBy</td>
-                <td>@item.CreatedDate</td>
-                <td>@item.UpdatedBy</td>
-                <td>@item.CreatedDate</td>
-                <td>@item.IsDeleted</td>
-            </tr>
-        }
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <th>@item.Id</th>
+                    <td>@item.TypeName</td>
+                    <td>@item.ProductName</td>
+                    <td>@item.Price $</td>
+                    <td>@item.Note</td>
+                </tr>
+            }
         }
     </tbody>
 </table>
