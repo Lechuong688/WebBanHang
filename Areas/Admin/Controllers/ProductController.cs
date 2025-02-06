@@ -22,39 +22,12 @@ namespace WebBanHang.Areas.Admin.Controllers
             _productRepository = productRepository;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int pageIndex = 1, int pageSize = 20, string keySearch = "")
         {
-            var products = _productRepository.GetList(1, 20, "");
-            var productViewModels = (from p in products
-                                     join m in _dataContext.MasterData on p.TypeId equals m.Id
-                                     select new ProductViewModel
-                                     {
-                                         Id = p.Id,
-                                         ProductName = p.Name,
-                                         Price = p.Price,
-                                         Note = p.Note,
-                                         TypeName = m.Name // Lấy tên loại từ bảng MasterData
-                                     }).ToList();
-
-            return View(productViewModels);
+            var products = _productRepository.GetList(pageIndex, pageSize, keySearch);
+            return View(products);
         }
-        
-        //public IActionResult ProductList()
-        //{
-        //    var products = (from p in _dataContext.Product
-        //                    join m in _dataContext.MasterData on p.TypeId equals m.Id
-        //                    where p.IsDeleted == false
-        //                    select new ProductViewModel
-        //                    {
-        //                        Id = p.Id,
-        //                        TypeName = m.Name, // Lấy tên loại
-        //                        ProductName = p.Name,
-        //                        Price = p.Price,
-        //                        Note = p.Note
-        //                    }).ToList();
 
-        //    return View(products);
-        //}
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

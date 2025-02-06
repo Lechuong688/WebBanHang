@@ -1,10 +1,13 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using WebBanHang.Repository;
 using WebBanHang.Repository.Product;
+using Microsoft.AspNetCore.Identity;
+using WebBanHang.Models;
+using WebBanHang.Repository.User;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//Connection Db
+// Cấu hình Connection Db
 builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlServer(builder.Configuration["ConnectionStrings:ConnectdDb"]);
@@ -15,8 +18,21 @@ builder.Services.AddDbContext<DataContext>(options =>
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<WebBanHang.Areas.Admin.Product.IProductRepository, WebBanHang.Areas.Admin.Product.ProductRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
-
+// Cấu hình Identity
+builder.Services.AddIdentity<AppUserModel, AppRoleModel>(options =>
+{
+    // Cấu hình các tùy chọn password, lockout, v.v.
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequiredLength = 6;
+    options.Password.RequiredUniqueChars = 1;
+    options.User.RequireUniqueEmail = true;
+})
+.AddEntityFrameworkStores<DataContext>()
+.AddDefaultTokenProviders();
 
 var app = builder.Build();
 
@@ -33,7 +49,9 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthorization();
+// Cấu hình Middleware
+app.UseAuthentication(); // Sử dụng Authentication
+app.UseAuthorization();  // Sử dụng Authorization
 
 app.MapControllerRoute(
     name: "default",
