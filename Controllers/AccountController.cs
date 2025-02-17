@@ -1,62 +1,59 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 using WebBanHang.Models;
-using WebBanHang.Repository;
+using WebBanHang.Models.ViewModel;
 using WebBanHang.Repository.User;
 
 namespace WebBanHang.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly DataContext _dataContext;
         private readonly ILogger<AccountController> _logger;
         private readonly IUserRepository _userRepository;
-        private readonly RoleManager<AppRoleModel> _roleManager;
 
-        public AccountController(ILogger<AccountController> logger, DataContext context, IUserRepository userRepository, RoleManager<AppRoleModel> roleManager)
+        public AccountController(ILogger<AccountController> logger, IUserRepository userRepository)
         {
             _logger = logger;
-            _dataContext = context;
             _userRepository = userRepository;
-            _roleManager = roleManager;
         }
-        public IActionResult Index(UserModel model)
+
+        public IActionResult Login(string returnUrl)
         {
-            return View(model);
+            return View(new LogInViewModel { ReturnUrl = returnUrl });
         }
-        public IActionResult CreateUser(UserModel model)
+
+        public IActionResult CreateUser()
         {
-            return View(model);
+            return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateUserAsync(UserModel model)
         {
-            if (ModelState.IsValid)
+            //if (!ModelState.IsValid)
+            //{
+            //    return View("CreateUser");
+            //}
+
+            var result = await _userRepository.CreateUserAsync(model);
+
+            if (result.Succeeded)
             {
-                // Gọi repository để tạo người dùng
-                var result = await _userRepository.CreateUserAsync(model);
-
-                if (result.Succeeded)
+                TempData["success"] = "Tạo user thành công.";
+                return Redirect("/Account/Login");
+            }
+            else
+            {
+                foreach (var error in result.Errors)
                 {
-                    // Redirect đến trang sản phẩm khi tạo người dùng thành công
-                    return Redirect("/admin/product");
+                    ModelState.AddModelError("", error.Description);
                 }
-                else
-                {
-                    // Thêm lỗi vào ModelState nếu có lỗi
-                    foreach (IdentityError error in result.Errors)
-                    {
-                        ModelState.AddModelError("", error.Description);
-                    }
 
-                    // Log lỗi chi tiết (có thể kiểm tra lỗi bằng cách debug hoặc ghi log)
-                    _logger.LogError("Error creating user: " + string.Join(", ", result.Errors.Select(e => e.Description)));
-                }
+                _logger.LogError("Error creating user: " + string.Join(", ", result.Errors.Select(e => e.Description)));
             }
 
-            // Nếu không hợp lệ hoặc có lỗi, trả về trang tạo người dùng với thông báo lỗi
-            return View("Index");
+            return View("CreateUser");
         }
     }
 }

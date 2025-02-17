@@ -4,6 +4,7 @@ using WebBanHang.Repository.Product;
 using Microsoft.AspNetCore.Identity;
 using WebBanHang.Models;
 using WebBanHang.Repository.User;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,18 +22,18 @@ builder.Services.AddScoped<WebBanHang.Areas.Admin.Product.IProductRepository, We
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 // Cấu hình Identity
-builder.Services.AddIdentity<AppUserModel, AppRoleModel>(options =>
+builder.Services.AddIdentity<AppUserModel, IdentityRole>()
+        .AddEntityFrameworkStores<DataContext>().AddDefaultTokenProviders();
+
+builder.Services.Configure<IdentityOptions>(options =>
 {
     // Cấu hình các tùy chọn password, lockout, v.v.
     options.Password.RequireDigit = true;
     options.Password.RequireLowercase = true;
     options.Password.RequireUppercase = true;
     options.Password.RequiredLength = 6;
-    options.Password.RequiredUniqueChars = 1;
     options.User.RequireUniqueEmail = true;
-})
-.AddEntityFrameworkStores<DataContext>()
-.AddDefaultTokenProviders();
+});
 
 var app = builder.Build();
 
@@ -56,6 +57,10 @@ app.UseAuthorization();  // Sử dụng Authorization
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Account}/{action=Login}/{id?}");
 
 app.MapControllerRoute(
     name: "Areas",

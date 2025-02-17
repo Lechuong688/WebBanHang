@@ -4,11 +4,10 @@ using WebBanHang.Models;
 
 namespace WebBanHang.Repository
 {
-    public class DataContext : IdentityDbContext<AppUserModel, AppRoleModel, int>
+    public class DataContext : IdentityDbContext<AppUserModel>
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
-
         }
         public DbSet<MasterDataModel> MasterData { get; set; }
         public DbSet<RoleModel> Role { get; set; }

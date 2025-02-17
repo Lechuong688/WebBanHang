@@ -10,7 +10,7 @@ namespace WebBanHang.Models
         public int ProductId { get; set; }
         [Required(ErrorMessage = "OrderId không được để trống")]
         public int OrdelId { get; set; }
-        public string Note { get; set; }
+        public string? Note { get; set; }
         public bool IsDeleted { get; set; }
         public int? CreatedBy { get; set; }
         public DateTime? CreatedDate { get; set; }

@@ -7,54 +7,49 @@ namespace WebBanHang.Repository.User
     public class UserRepository : IUserRepository
     {
         private readonly DataContext _dataContext;
-        private readonly ILogger<UserRepository> _logger;
-        private readonly UserManager<AppUserModel> _userManager;
-        private readonly RoleManager<AppRoleModel> _roleManager;
+        private UserManager<AppUserModel> _userManager;
+        private SignInManager<AppUserModel> _signInManage;
 
-        public UserRepository(ILogger<UserRepository> logger, DataContext context, UserManager<AppUserModel> userManager, RoleManager<AppRoleModel> roleManager)
+        public UserRepository(ILogger<UserRepository> logger, DataContext context, UserManager<AppUserModel> userManager, SignInManager<AppUserModel> signInManage)
         {
-            _logger = logger;
             _dataContext = context;
             _userManager = userManager;
-            _roleManager = roleManager;
+            _signInManage = signInManage;
         }
 
         public async Task<IdentityResult> CreateUserAsync(UserModel user)
         {
             try
             {
-                // Tạo mới người dùng từ UserModel
-                AppUserModel newUser = new AppUserModel
+                var newUser = new AppUserModel
                 {
-                    UserName = user.UserName,
-                    Email = user.Email,
-                    Name = user.Name,
+                    UserName = user.UserName, //Tên người dùng
+                    Email = user.Email, //Email
+                    RoleId = 5, // Gán RoleId mặc định
                     IsDelete = false, // Giả sử là mới tạo, chưa xóa
                     CreatedDate = DateTime.Now,
                     UpdatedDate = DateTime.Now
                 };
 
-                // Tạo người dùng
-                var result = await _userManager.CreateAsync(newUser, user.Password);
+                // Hash mật khẩu
+                var passwordHasher = new PasswordHasher<AppUserModel>();
+                newUser.PasswordHash = passwordHasher.HashPassword(newUser, user.Password);
 
-                if (result.Succeeded)
-                {
-                    // Gán vai trò cho người dùng
-                    var role = await _roleManager.FindByIdAsync(user.RoleId.ToString());
-                    if (role != null)
-                    {
-                        await _userManager.AddToRoleAsync(newUser, role.Name);
-                    }
-                }
+                // Thêm user vào database
+                var result = await _userManager.CreateAsync(newUser);
 
                 return result;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Lỗi khi tạo người dùng.");
-                return IdentityResult.Failed(new IdentityError { Description = "Đã có lỗi xảy ra khi tạo người dùng." });
+                return IdentityResult.Failed(new IdentityError { Description = ex.Message });
             }
         }
+
+        //public async Task<IdentityResult> LognIn(UserModel user)
+        //{
+
+        //}
 
         public List<UserModel> GetList(int pageIndex, int pageSize, string keySearch)
         {

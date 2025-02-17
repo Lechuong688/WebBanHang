@@ -9,8 +9,8 @@ namespace WebBanHang.Models
         [Required(ErrorMessage = "TypeId không được để trống")]
         public int TypeId { get; set; }
         [Required(ErrorMessage = "Name không được để trống")]
-        public string Name { get; set; }
-        public string Note { get; set; }
+        public string? Name { get; set; }
+        public string? Note { get; set; }
         public bool IsDeleted { get; set; }
         public int? CreatedBy { get; set; }
         public DateTime? CreatedDate { get; set; }
