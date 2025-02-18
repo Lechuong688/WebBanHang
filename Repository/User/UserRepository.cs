@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using WebBanHang.Controllers;
 using WebBanHang.Models;
+using WebBanHang.Models.ViewModel;
 
 namespace WebBanHang.Repository.User
 {
@@ -33,6 +34,7 @@ namespace WebBanHang.Repository.User
 
                 // Hash mật khẩu
                 var passwordHasher = new PasswordHasher<AppUserModel>();
+                //IdentityResult result = await _userManager.CreateAsync(newUser, user.Password);
                 newUser.PasswordHash = passwordHasher.HashPassword(newUser, user.Password);
 
                 // Thêm user vào database
@@ -46,10 +48,18 @@ namespace WebBanHang.Repository.User
             }
         }
 
-        //public async Task<IdentityResult> LognIn(UserModel user)
-        //{
-
-        //}
+        public async Task<SignInResult> Login(LogInViewModel loginVM)
+        {
+            try
+            {
+                Microsoft.AspNetCore.Identity.SignInResult result = await _signInManage.PasswordSignInAsync(loginVM.UserName, loginVM.Password, false, false);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Lỗi khi đăng nhập: " + ex.Message);
+            }
+        }
 
         public List<UserModel> GetList(int pageIndex, int pageSize, string keySearch)
         {
