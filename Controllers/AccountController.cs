@@ -37,7 +37,7 @@ namespace WebBanHang.Controllers
                 {
                     TempData["success"] = "Đăng nhập thành công!";
                     TempData.Keep("success");
-                    // Đăng nhập thành công, chuyển đến trang quản lý sản phẩm hoặc trang nào đó
+                    // Đăng nhập thành công, chuyển đến trang chủ
                     return Redirect("/home");
                 }
                 else

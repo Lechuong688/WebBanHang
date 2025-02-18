@@ -5,10 +5,12 @@ using WebBanHang.Controllers;
 using WebBanHang.Models;
 using WebBanHang.Repository;
 using WebBanHang.Areas.Admin.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebBanHang.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize]
     public class ProductController : Controller
     {
         private readonly DataContext _dataContext;

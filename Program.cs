@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using WebBanHang.Models;
 using WebBanHang.Repository.User;
 using Microsoft.Extensions.DependencyInjection;
+using WebBanHang.Repository.MasterData;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +21,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<WebBanHang.Areas.Admin.Product.IProductRepository, WebBanHang.Areas.Admin.Product.ProductRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IMasterDataRepository, MasterDataRepository>();
 
 // Cấu hình Identity
 builder.Services.AddIdentity<AppUserModel, IdentityRole>()

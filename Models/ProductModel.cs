@@ -18,6 +18,5 @@ namespace WebBanHang.Models
         public DateTime? UpdatedDate { get; set; }
         public decimal Price { get; set; }
 
-
     }
 }
